@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "317491048317",
+    "project_id": "healthsense-c98fa",
+    "storage_bucket": "healthsense-c98fa.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:317491048317:android:713896a4887c8920b32614",
+        "android_client_info": {
+          "package_name": "com.sam.healthsense"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB30Ec7OQ3YuxMkF_z6liG4ek-f1GJPjgQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
