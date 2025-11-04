@@ -59,6 +59,8 @@ class HomeViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(error = null)
     }
 
+    // UPDATE: Added proper implementation for patient statistics calculation
+
     private fun calculatePatientStats(patients: List<PatientWithStatus>): PatientStats {
         val totalPatients = patients.size
         val normalWeight = patients.count { it.latestBmiStatus == BMIStatus.NORMAL }
@@ -73,7 +75,6 @@ class HomeViewModel @Inject constructor(
         )
     }
 }
-
 data class HomeUiState(
     val isLoading: Boolean = false,
     val error: String? = null

@@ -19,6 +19,7 @@ import com.sam.healthsense.detail.DetailScreen
 import com.sam.healthsense.home.HomeScreen
 import com.sam.healthsense.home.HomeViewModel
 import com.sam.healthsense.presentation.screens.PatientRegistrationScreen
+import com.sam.healthsense.presentation.screens.PatientVitalsScreen
 import com.sam.healthsense.splash.SplashScreen
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -117,7 +118,9 @@ fun AppNavigation(
         ) { backStackEntry ->
             PatientRegistrationScreen(
                 onBack = {
-                    navController.popBackStack()
+                    navController.navigate(NavigationDestination.Home.route){
+                        popUpTo(NavigationDestination.Home.route) { inclusive = true }
+                    }
                 },
                 onPatientRegistered = { patientId ->
                     navController.navigate(NavigationDestination.PatientVitals.createRoute(patientId))
@@ -135,7 +138,11 @@ fun AppNavigation(
             PatientVitalsScreen(
                 patientId = patientId,
                 onBack = {
-                    navController.popBackStack()
+                    // Navigate back to Home instead of previous screen
+                    navController.navigate(NavigationDestination.Home.route) {
+                        popUpTo(NavigationDestination.Home.route) { inclusive = true }
+                    }
+                    //navController.popBackStack()
                 },
                 onVitalsSaved = { patientId, bmi ->
                     if (bmi < 25) {

@@ -21,6 +21,9 @@ class PatientRegistrationViewModel @Inject constructor(
     private val _registrationResult = MutableStateFlow<Result<Unit>?>(null)
     val registrationResult: StateFlow<Result<Unit>?> = _registrationResult.asStateFlow()
 
+    private val _loadingState = MutableStateFlow(false)
+    val loadingState: StateFlow<Boolean> = _loadingState.asStateFlow()
+
     fun registerPatient(
         patientNumber: String,
         registrationDate: LocalDate,
@@ -30,11 +33,12 @@ class PatientRegistrationViewModel @Inject constructor(
         gender: String
     ) {
         viewModelScope.launch {
+            _loadingState.value = true
             _registrationResult.value = Result.Loading
 
-            // Check if patient number already exists
             if (patientRepository.checkPatientNumberExists(patientNumber)) {
                 _registrationResult.value = Result.Error("Patient number already exists")
+                _loadingState.value = false
                 return@launch
             }
 
@@ -49,6 +53,7 @@ class PatientRegistrationViewModel @Inject constructor(
 
             val result = patientRepository.registerPatient(patient)
             _registrationResult.value = result
+            _loadingState.value = false
         }
     }
 
