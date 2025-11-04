@@ -56,9 +56,6 @@ dependencies {
     //hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
-//    implementation(libs.hilt.android)
-//    implementation(libs.androidx.media3.common.ktx)
-//    kapt(libs.hilt.android.compiler)
 
     //hilt-navigation
     implementation(libs.hilt.navigation.compose)
@@ -67,7 +64,27 @@ dependencies {
     //retrofit dep
     implementation(libs.converter.moshi)
     implementation(libs.retrofit)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging.interceptor)
+    implementation(libs.moshi.kotlin)
+    ksp(libs.moshi.kotlin.codegen)
 
+    // OkHttp for networking
+//    implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
+//    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+//    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+//    ksp("com.squareup.moshi:moshi-kotlin-codegen:1.15.0")
+
+    // Room Database
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+
+    // DateTime handling
+    implementation(libs.kotlinx.datetime)
+
+    //Material 3 extended icons
+    implementation(libs.androidx.compose.material.icons.extended.android)
     //Accompanist
     implementation("com.google.accompanist:accompanist-permissions:0.37.3")
 //    implementation("androidx.core:core-ktx:1.13.1")
@@ -76,9 +93,8 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     //Firebase Authentication
 
-    //implementation(libs.firebase.auth.ktx)
-    //Firebase Auth
 
+    //Firebase Auth
     //implementation(libs.firebase.authentication)
     implementation(libs.firebase.auth.ktx)
     //implementation(libs.firebase.auth)
@@ -94,7 +110,6 @@ dependencies {
     //testing turbine
     testImplementation(libs.turbine)
     testImplementation(libs.kotlinx.coroutines.test)
-    //testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

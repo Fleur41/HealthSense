@@ -20,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel // This is correct
 class SettingsViewmodel @Inject constructor(
     private val authRepository: AuthRepository,
-    private val datastoreRepository: DatastoreRepository // This dependency should now be correctly provided by Hilt
+    private val datastoreRepository: DatastoreRepository
 ) : ViewModel() {
     private val _startDestination =
         MutableStateFlow<NavigationDestination>(NavigationDestination.Splash)

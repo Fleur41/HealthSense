@@ -82,12 +82,3 @@ sealed interface AuthState{
     data class Error(val message: String): AuthState
 
 }
-
-//suspend fun main() {
-//    val scope = CoroutineScope(Dispatchers.Default)
-//    scope.launch {
-//        delay(4000)
-//        println("Hello sir")
-//    }.join()
-//    println("This will be printed")
-//}

@@ -35,8 +35,6 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun SignUpScreen(
     onBack: () -> Unit,
-//    onSignUpSuccess: () -> Unit,
-    // Consider adding a ViewModel parameter for state and logic
     authViewModel: AuthViewModel
 ) {
     val context = LocalContext.current
@@ -106,7 +104,7 @@ fun SignUpScreen(
                 },
                 enableActionButton = authState !is AuthState.Loading,
                 // --- Explicitly enable and provide values for Confirm Password ---
-                showConfirmPasswordField = true,               // VERY IMPORTANT
+                showConfirmPasswordField = true,
                 confirmPasswordValue = confirmPassword,
                 onConfirmPasswordChange = { confirmPassword = it },
                 onConfirmPasswordClear = { confirmPassword = "" }

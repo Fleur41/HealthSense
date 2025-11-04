@@ -41,10 +41,10 @@ fun EmailAndPasswordContent(
     actionButtonContent: @Composable () -> Unit,
     enableActionButton: Boolean = true,
     // --- Parameters for optional Confirm Password field ---
-    showConfirmPasswordField: Boolean = false,       // Default to false
-    confirmPasswordValue: String = "",               // Value for the confirm password field
-    onConfirmPasswordChange: (String) -> Unit = {},  // Handler for confirm password change
-    onConfirmPasswordClear: () -> Unit = {}          // Handler for clearing confirm password
+    showConfirmPasswordField: Boolean = false,
+    confirmPasswordValue: String = "",
+    onConfirmPasswordChange: (String) -> Unit = {},
+    onConfirmPasswordClear: () -> Unit = {}
 ) {
     Column(
         modifier = modifier,
@@ -66,7 +66,7 @@ fun EmailAndPasswordContent(
             value = password,
             onValueChange = onPasswordChange,
             placeholderText = "Enter your Password",
-            isPasswordField = true, // Assuming CustomTextField handles this
+            isPasswordField = true,
             onClear = onPasswordClear
         )
 
@@ -78,7 +78,7 @@ fun EmailAndPasswordContent(
                 value = confirmPasswordValue,
                 onValueChange = onConfirmPasswordChange,
                 placeholderText = "Confirm your Password",
-                isPasswordField = true, // Assuming CustomTextField handles this
+                isPasswordField = true,
                 onClear = onConfirmPasswordClear
             )
         }
@@ -91,7 +91,6 @@ fun EmailAndPasswordContent(
             enabled = enableActionButton
         ) {
             actionButtonContent()
-//            Text(text = actionButtonText)
         }
     }
 }

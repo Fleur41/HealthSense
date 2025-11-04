@@ -18,7 +18,7 @@ import com.sam.healthsense.home.HomeScreen
 import com.sam.healthsense.home.HomeViewModel
 import com.sam.healthsense.splash.SplashScreen
 
-@OptIn(ExperimentalAnimationApi::class) // May be needed for NavHost/composable transitions
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun AppNavigation(
     modifier: Modifier = Modifier,
@@ -30,13 +30,13 @@ fun AppNavigation(
         modifier = modifier,
         navController = navController,
         startDestination = startDestination.route
-        // No global transitions if defining per-composable and your Nav version supports it
+
     ) {
         composable(
             route = NavigationDestination.SignIn.route,
-            enterTransition = { slideIntoContainerAnimation() }, // This is your new function from Animations.kt
+            enterTransition = { slideIntoContainerAnimation() },
 
-            exitTransition = { slideOutOfContainerAnimation() } // This is your new function from Animations.kt
+            exitTransition = { slideOutOfContainerAnimation() }
 
 
         ) { backStackEntry ->
@@ -52,9 +52,6 @@ fun AppNavigation(
             route = NavigationDestination.SignUp.route,
             enterTransition = { slideIntoContainerAnimation(towards = SlideDirection.Left) },
             exitTransition = { slideOutOfContainerAnimation(towards = SlideDirection.Right) }
-            // For example:
-            // popEnterTransition = { slideInWithDirection(SlideDirection.Start) }, // If SignUp could pop to a deeper screen
-            // popExitTransition = { slideOutWithDirection(SlideDirection.End) }   // When SignUp is popped (e.g. back to SignIn)
         ) { backStackEntry ->
             val parentEntry = remember(backStackEntry) {navController.getBackStackEntry(NavigationDestination.SignIn.route)}
             SignUpScreen(
@@ -72,9 +69,6 @@ fun AppNavigation(
             route = NavigationDestination.Home.route,
             enterTransition = { slideIntoContainerAnimation(towards = SlideDirection.Left) },
             exitTransition = { slideOutOfContainerAnimation(towards = SlideDirection.Right) }
-            // For example:
-            // popEnterTransition = { slideInWithDirection(SlideDirection.Start) }, // If SignUp could pop to a deeper screen
-            // popExitTransition = { slideOutWithDirection(SlideDirection.End) }   // When SignUp is popped (e.g. back to SignIn)
         ) {
             val homeViewModel: HomeViewModel = hiltViewModel()
             HomeScreen(
@@ -91,9 +85,9 @@ fun AppNavigation(
 
         composable(
             route = NavigationDestination.Detail.route,
-            enterTransition = { slideIntoContainerAnimation() }, // This is your new function from Animations.kt
+            enterTransition = { slideIntoContainerAnimation() },
 
-            exitTransition = { slideOutOfContainerAnimation() } // This is your new function from Animations.kt
+            exitTransition = { slideOutOfContainerAnimation() }
 
 
         ) { backStackEntry ->
