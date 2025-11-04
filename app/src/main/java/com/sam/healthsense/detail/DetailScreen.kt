@@ -21,9 +21,9 @@ fun DetailScreen(
     onBackClick: () -> Unit,
     homeViewModel: HomeViewModel
 ) {
-    LaunchedEffect(Unit) {
-        homeViewModel.logDetailScreenViewEvent()
-    }
+//    LaunchedEffect(Unit) {
+//        homeViewModel.logDetailScreenViewEvent()
+//    }
     Scaffold(
         topBar = {
             TopAppBar(

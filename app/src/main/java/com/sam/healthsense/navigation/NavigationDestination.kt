@@ -38,4 +38,46 @@ sealed interface NavigationDestination {
         override val route: String
             get() = "detail"
     }
+
+    // NEW: HealthSense specific destinations
+    data object PatientRegistration: NavigationDestination {
+        override val title: String
+            get() = "Register Patient"
+        override val route: String
+            get() = "patient_registration"
+    }
+
+    data object PatientVitals: NavigationDestination {
+        override val title: String
+            get() = "Patient Vitals"
+        override val route: String
+            get() = "patient_vitals/{patientId}"
+
+        fun createRoute(patientId: String): String = "patient_vitals/$patientId"
+    }
+
+    data object GeneralAssessment: NavigationDestination {
+        override val title: String
+            get() = "General Assessment"
+        override val route: String
+            get() = "general_assessment/{patientId}"
+
+        fun createRoute(patientId: String): String = "general_assessment/$patientId"
+    }
+
+    data object OverweightAssessment: NavigationDestination {
+        override val title: String
+            get() = "Overweight Assessment"
+        override val route: String
+            get() = "overweight_assessment/{patientId}"
+
+        fun createRoute(patientId: String): String = "overweight_assessment/$patientId"
+    }
+
+    data object PatientListing: NavigationDestination {
+        override val title: String
+            get() = "Patient List"
+        override val route: String
+            get() = "patient_listing"
+    }
 }
