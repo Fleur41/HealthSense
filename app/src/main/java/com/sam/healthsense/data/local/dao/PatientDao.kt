@@ -23,18 +23,7 @@ interface PatientDao {
     @Query("SELECT * FROM patients ORDER BY firstName, lastName")
     suspend fun getAllPatients(): List<PatientEntity>
 
-    @Query("""
-        SELECT p.*, 
-               (SELECT pv.* FROM patient_vitals pv 
-                WHERE pv.patientId = p.id 
-                ORDER BY pv.visitDate DESC LIMIT 1) as latestVitals
-        FROM patients p
-        ORDER BY p.firstName, p.lastName
-    """)
-    suspend fun getPatientsWithLatestStatus(): List<PatientWithVitals>
-
-    data class PatientWithVitals(
-        @Embedded val patient: PatientEntity,
-        @Embedded(prefix = "latestVitals_") val latestVitals: PatientVitalsEntity?
-    )
+    // Simple query - we'll handle the latest vitals logic in repository
+    @Query("SELECT * FROM patients ORDER BY firstName, lastName")
+    suspend fun getPatientsWithLatestStatus(): List<PatientEntity>
 }

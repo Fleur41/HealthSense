@@ -83,6 +83,12 @@ dependencies {
     // DateTime handling
     implementation(libs.kotlinx.datetime)
 
+    //the desugaring
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
+
+    // DateTime handling
+    implementation(libs.kotlinx.datetime)
+
     //Material 3 extended icons
     implementation(libs.androidx.compose.material.icons.extended.android)
     //Accompanist

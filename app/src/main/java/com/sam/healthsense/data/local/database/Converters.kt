@@ -1,20 +1,17 @@
 package com.sam.healthsense.data.local.database
 
 import androidx.room.TypeConverter
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import kotlinx.datetime.LocalDate
 
 class Converters {
 
-    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE
-
     @TypeConverter
     fun fromLocalDate(date: LocalDate?): String? {
-        return date?.format(formatter)
+        return date?.toString()
     }
 
     @TypeConverter
     fun toLocalDate(dateString: String?): LocalDate? {
-        return dateString?.let { LocalDate.parse(it, formatter) }
+        return dateString?.let { LocalDate.parse(it) }
     }
 }

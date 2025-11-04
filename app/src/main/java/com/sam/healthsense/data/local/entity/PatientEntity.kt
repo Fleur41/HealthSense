@@ -2,7 +2,7 @@ package com.sam.healthsense.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 
 @Entity(tableName = "patients")
 data class PatientEntity(

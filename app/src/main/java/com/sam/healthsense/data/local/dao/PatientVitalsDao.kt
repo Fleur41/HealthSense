@@ -2,7 +2,7 @@ package com.sam.healthsense.data.local.dao
 
 import androidx.room.*
 import com.sam.healthsense.data.local.entity.PatientVitalsEntity
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 
 @Dao
 interface PatientVitalsDao {
