@@ -18,6 +18,7 @@ import com.sam.healthsense.components.slideOutOfContainerAnimation
 import com.sam.healthsense.detail.DetailScreen
 import com.sam.healthsense.home.HomeScreen
 import com.sam.healthsense.home.HomeViewModel
+import com.sam.healthsense.presentation.screens.GeneralAssessmentScreen
 import com.sam.healthsense.presentation.screens.PatientRegistrationScreen
 import com.sam.healthsense.presentation.screens.PatientVitalsScreen
 import com.sam.healthsense.splash.SplashScreen
@@ -154,25 +155,25 @@ fun AppNavigation(
             )
         }
 //
-//        composable(
-//            route = NavigationDestination.GeneralAssessment.route,
-//            arguments = listOf(navArgument("patientId") { type = NavType.StringType }),
-//            enterTransition = { slideIntoContainerAnimation() },
-//            exitTransition = { slideOutOfContainerAnimation() }
-//        ) { backStackEntry ->
-//            val patientId = backStackEntry.arguments?.getString("patientId") ?: ""
-//            GeneralAssessmentScreen(
-//                patientId = patientId,
-//                onBack = {
-//                    navController.popBackStack()
-//                },
-//                onAssessmentSaved = {
-//                    navController.navigate(NavigationDestination.PatientListing.route) {
-//                        popUpTo(NavigationDestination.Home.route) { inclusive = false }
-//                    }
-//                }
-//            )
-//        }
+        composable(
+            route = NavigationDestination.GeneralAssessment.route,
+            arguments = listOf(navArgument("patientId") { type = NavType.StringType }),
+            enterTransition = { slideIntoContainerAnimation() },
+            exitTransition = { slideOutOfContainerAnimation() }
+        ) { backStackEntry ->
+            val patientId = backStackEntry.arguments?.getString("patientId") ?: ""
+            GeneralAssessmentScreen(
+                patientId = patientId,
+                onBack = {
+                    navController.popBackStack()
+                },
+                onAssessmentSaved = {
+                    navController.navigate(NavigationDestination.PatientListing.route) {
+                        popUpTo(NavigationDestination.Home.route) { inclusive = false }
+                    }
+                }
+            )
+        }
 //
 //        composable(
 //            route = NavigationDestination.OverweightAssessment.route,
