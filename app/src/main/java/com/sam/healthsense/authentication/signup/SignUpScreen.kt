@@ -72,13 +72,13 @@ fun SignUpScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             CompanyInfo(
-                modifier = Modifier.weight(1f) // Takes available top space
+                modifier = Modifier.weight(1f)
             )
 
             EmailAndPasswordContent(
                 modifier = Modifier
-                    .weight(1f) // Takes available middle space
-                    .padding(horizontal = 16.dp), // Padding for the content
+                    .weight(1f)
+                    .padding(horizontal = 16.dp),
                 email = email,
                 password = password,
                 onEmailChange = { email = it },

@@ -16,9 +16,10 @@ import com.sam.healthsense.authentication.signup.SignUpScreen
 import com.sam.healthsense.components.slideIntoContainerAnimation
 import com.sam.healthsense.components.slideOutOfContainerAnimation
 import com.sam.healthsense.detail.DetailScreen
-import com.sam.healthsense.home.HomeScreen
-import com.sam.healthsense.home.HomeViewModel
 import com.sam.healthsense.presentation.screens.GeneralAssessmentScreen
+import com.sam.healthsense.presentation.screens.HomeScreen
+import com.sam.healthsense.presentation.screens.OverweightAssessmentScreen
+import com.sam.healthsense.presentation.screens.PatientListingScreen
 import com.sam.healthsense.presentation.screens.PatientRegistrationScreen
 import com.sam.healthsense.presentation.screens.PatientVitalsScreen
 import com.sam.healthsense.splash.SplashScreen
@@ -65,9 +66,6 @@ fun AppNavigation(
                 onBack = {
                     navController.popBackStack()
                 },
-//                onSignUpSuccess = {
-//                    navController.navigate(NavigationDestination.Home.route)
-//                }
             )
         }
 
@@ -76,8 +74,6 @@ fun AppNavigation(
             enterTransition = { slideIntoContainerAnimation(towards = SlideDirection.Left) },
             exitTransition = { slideOutOfContainerAnimation(towards = SlideDirection.Right) }
         ) {
-//            val homeViewModel: HomeViewModel = hiltViewModel()
-//            homeViewModel = homeViewModel //it was in HomeScreen
             HomeScreen(
                 onPatientRegistration = {
                     navController.navigate(NavigationDestination.PatientRegistration.route)
@@ -128,31 +124,6 @@ fun AppNavigation(
                 }
             )
         }
-//        composable(
-//            route = NavigationDestination.PatientRegistration.route,
-//            enterTransition = { slideIntoContainerAnimation() },
-//            exitTransition = { slideOutOfContainerAnimation() }
-//        ) { backStackEntry ->
-//            PatientRegistrationScreen(
-//                onBack = {
-//                    navController.navigate(NavigationDestination.Home.route){
-//                        popUpTo(NavigationDestination.Home.route) { inclusive = true }
-//                    }
-//                },
-//                onPatientRegistered = { patientId ->
-//                    println("🟡 DEBUG: PatientRegistration - received patientId: '$patientId'")
-//                    // Add validation here to ensure it's a UUID, not a patient number
-//                    if (patientId.startsWith("PAT")) {
-//                        println("🔴 DEBUG: ERROR - Received patient NUMBER instead of UUID: $patientId")
-//                        // You might need to fetch the correct UUID from the database
-//                        // But better to fix the source in the ViewModel
-//                    } else {
-//                        println("🟢 DEBUG: Received valid UUID, navigating to vitals")
-//                        navController.navigate(NavigationDestination.PatientVitals.createRoute(patientId))
-//                    }
-//                }
-//            )
-//        }
 
 
         composable(
@@ -165,11 +136,9 @@ fun AppNavigation(
             PatientVitalsScreen(
                 patientId = patientId,
                 onBack = {
-                    // Navigate back to Home instead of previous screen
                     navController.navigate(NavigationDestination.Home.route) {
                         popUpTo(NavigationDestination.Home.route) { inclusive = true }
                     }
-                    //navController.popBackStack()
                 },
                 onVitalsSaved = { patientId, bmi ->
                     if (bmi < 25) {
@@ -191,6 +160,28 @@ fun AppNavigation(
             GeneralAssessmentScreen(
                 patientId = patientId,
                 onBack = {
+                    navController.navigate(NavigationDestination.Home.route) {
+                        popUpTo(NavigationDestination.Home.route) { inclusive = true }
+                    }
+                },
+                onAssessmentSaved = {
+                    navController.navigate(NavigationDestination.PatientListing.route) {
+                        popUpTo(NavigationDestination.Home.route) { inclusive = false }
+                    }
+                }
+            )
+        }
+
+        composable(
+            route = NavigationDestination.OverweightAssessment.route,
+            arguments = listOf(navArgument("patientId") { type = NavType.StringType }),
+            enterTransition = { slideIntoContainerAnimation() },
+            exitTransition = { slideOutOfContainerAnimation() }
+        ) { backStackEntry ->
+            val patientId = backStackEntry.arguments?.getString("patientId") ?: ""
+            OverweightAssessmentScreen(
+                patientId = patientId,
+                onBack = {
                     navController.popBackStack()
                 },
                 onAssessmentSaved = {
@@ -200,38 +191,18 @@ fun AppNavigation(
                 }
             )
         }
-//
-//        composable(
-//            route = NavigationDestination.OverweightAssessment.route,
-//            arguments = listOf(navArgument("patientId") { type = NavType.StringType }),
-//            enterTransition = { slideIntoContainerAnimation() },
-//            exitTransition = { slideOutOfContainerAnimation() }
-//        ) { backStackEntry ->
-//            val patientId = backStackEntry.arguments?.getString("patientId") ?: ""
-//            OverweightAssessmentScreen(
-//                patientId = patientId,
-//                onBack = {
-//                    navController.popBackStack()
-//                },
-//                onAssessmentSaved = {
-//                    navController.navigate(NavigationDestination.PatientListing.route) {
-//                        popUpTo(NavigationDestination.Home.route) { inclusive = false }
-//                    }
-//                }
-//            )
-//        }
-//
-//        composable(
-//            route = NavigationDestination.PatientListing.route,
-//            enterTransition = { slideIntoContainerAnimation() },
-//            exitTransition = { slideOutOfContainerAnimation() }
-//        ) {
-//            PatientListingScreen(
-//                onBack = {
-//                    navController.popBackStack()
-//                }
-//            )
-//        }
+
+        composable(
+            route = NavigationDestination.PatientListing.route,
+            enterTransition = { slideIntoContainerAnimation() },
+            exitTransition = { slideOutOfContainerAnimation() }
+        ) {
+            PatientListingScreen(
+                onBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
 
     }
 }

@@ -60,8 +60,6 @@ class AuthViewModel @Inject constructor(
             )
         }
     }
-//     "sam1@gmail.com", "samy10@gmail.com", "sammirngahu123@gmail.com", "tintin@gmail.com"
-//    pwd: samqwerty, "samy10" "sammirngahu123" "tintin1234"
 
     fun saveIsAuthenticated(authenticated: Boolean){
         viewModelScope.launch {

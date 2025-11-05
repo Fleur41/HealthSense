@@ -23,7 +23,7 @@ interface PatientDao {
     @Query("SELECT * FROM patients ORDER BY firstName, lastName")
     suspend fun getAllPatients(): List<PatientEntity>
 
-    // Simple query - we'll handle the latest vitals logic in repository
+    // Simple query
     @Query("SELECT * FROM patients ORDER BY firstName, lastName")
     suspend fun getPatientsWithLatestStatus(): List<PatientEntity>
 
@@ -31,7 +31,7 @@ interface PatientDao {
     suspend fun getAllPatientIdsAndNames(): List<PatientIdName>
 }
 
-// FIXED: Update the data class to match your entity structure
+
 data class PatientIdName(
     val id: String,
     val firstName: String,

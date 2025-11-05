@@ -88,11 +88,4 @@ data class PatientStats(
 ) {
     val hasPatients: Boolean get() = totalPatients > 0
 }
-//@HiltViewModel
-//class HomeViewModel @Inject constructor(
-//    private val homeRepository: HomeRepository
-//) : ViewModel() {
-//    fun logDetailScreenViewEvent(){
-//        homeRepository.logDetailScreenViewEvent()
-//    }
-//}
+

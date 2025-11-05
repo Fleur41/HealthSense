@@ -69,12 +69,6 @@ dependencies {
     implementation(libs.moshi.kotlin)
     ksp(libs.moshi.kotlin.codegen)
 
-    // OkHttp for networking
-//    implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
-//    implementation("com.squareup.okhttp3:okhttp:4.12.0")
-//    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
-//    ksp("com.squareup.moshi:moshi-kotlin-codegen:1.15.0")
-
     // Room Database
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)

@@ -22,7 +22,7 @@ fun CompanyInfo(modifier: Modifier = Modifier) {
         contentAlignment = Alignment.Center
     ){
         Text(
-            text = "HealthSense", // Or your company name
+            text = "HealthSense",
             style = MaterialTheme.typography.headlineLarge
         )
     }

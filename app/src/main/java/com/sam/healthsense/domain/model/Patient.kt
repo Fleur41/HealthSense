@@ -1,5 +1,6 @@
 package com.sam.healthsense.domain.model
 
+import com.sam.healthsense.Utils.DateUtils
 import kotlinx.datetime.LocalDate
 import java.util.UUID
 
@@ -16,12 +17,6 @@ data class Patient(
         get() = "$firstName $lastName"
 
     val age: Int
-        get() = calculateAge(dateOfBirth)
-}
+        get() = DateUtils.calculateAge(dateOfBirth)
 
-// Helper function to calculate age
-private fun calculateAge(dateOfBirth: LocalDate): Int {
-    // return a simple calculation
-    // implement proper age calculation when needed
-    return kotlin.math.max(0, 2024 - dateOfBirth.year) // Using current year as placeholder
 }

@@ -32,7 +32,7 @@ class VisitRepository @Inject constructor(
             // Save locally first
             patientVitalsDao.insertPatientVitals(vitals.toEntity())
 
-            // TODO: Sync to backend with Firebase token
+            // Sync to backend with Firebase token
             // val token = getFirebaseToken()
             // val response = visitApi.saveVitals(token, vitals.toRequest())
 
@@ -65,7 +65,7 @@ class VisitRepository @Inject constructor(
             // Save locally first
             generalAssessmentDao.insertAssessment(assessment.toEntity())
 
-            // TODO: Sync to backend with Firebase token
+            // Sync to backend with Firebase token
             // val token = getFirebaseToken()
             // val response = visitApi.saveGeneralAssessment(token, assessment.toRequest())
 
@@ -80,7 +80,7 @@ class VisitRepository @Inject constructor(
             // Save locally first
             overweightAssessmentDao.insertAssessment(assessment.toEntity())
 
-            // TODO: Sync to backend with Firebase token
+            // Sync to backend with Firebase token
             // val token = getFirebaseToken()
             // val response = visitApi.saveOverweightAssessment(token, assessment.toRequest())
 

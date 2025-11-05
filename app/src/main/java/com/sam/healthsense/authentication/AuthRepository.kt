@@ -64,7 +64,6 @@ class AuthRepositoryImpl @Inject constructor(
             .addOnSuccessListener { authResult ->
                 Log.d("TAG", "authResult: $authResult")
                 onSuccess()
-//
             }
             .addOnFailureListener { exception ->
                 Log.d("TAG", "exception: $exception")

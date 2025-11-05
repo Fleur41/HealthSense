@@ -67,7 +67,7 @@ fun SignInScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text(text = "Sign In") })
+            TopAppBar(title = { Text(text = "Login") })
         }
     ) { innerPadding ->
         Column(
@@ -78,12 +78,12 @@ fun SignInScreen(
             CompanyInfo(
                 modifier = Modifier
                     .weight(1f)
-                    .fillMaxWidth() // Ensures content within CompanyInfo can align if needed
+                    .fillMaxWidth()
             )
 
             Column (
                 modifier = Modifier
-                    .weight(1f) // Takes available space
+                    .weight(1f)
                     .padding(horizontal = 16.dp),
             ){
                 EmailAndPasswordContent(
@@ -129,8 +129,8 @@ fun SignInScreen(
 
             SignUpBox(
                 modifier = Modifier
-                    .weight(1f) // Takes available space
-                    .fillMaxWidth(), // Ensures content within SignUpBox can align if needed
+                    .weight(1f)
+                    .fillMaxWidth(),
                 onSignUpClick = onSignUpClick
             )
         }
@@ -144,9 +144,9 @@ fun SignUpBox(
 ) {
     Box (
         modifier = modifier
-            .fillMaxSize() // Fills the weighted space
-            .padding(bottom = 16.dp), // Padding for the text from the bottom of the box
-        contentAlignment = Alignment.BottomCenter // Aligns the Text to the bottom center
+            .fillMaxSize()
+            .padding(bottom = 16.dp),
+        contentAlignment = Alignment.BottomCenter
     ){
         Row (){
             Text(
@@ -159,14 +159,12 @@ fun SignUpBox(
                 text = "Signup instead",
                 style = MaterialTheme.typography.titleMedium,
                 textDecoration = TextDecoration.Underline,
-                color = Color.Blue // Or your MaterialTheme.colorScheme.primary
+                color = Color.Blue
             )
         }
     }
 }
 
-// Definition of CustomTextField - should be in a shared location or here if only used by SignInScreen
-// This is copied from your provided SignInScreen.kt
 @Composable
 fun CustomTextField(
     modifier: Modifier = Modifier,
@@ -179,8 +177,6 @@ fun CustomTextField(
     var showPassword by remember { mutableStateOf(false) }
     // Ensure you have these drawables in your res/drawable folder
     val passwordIconResId = if (showPassword) R.drawable.ic_eye_filled else R.drawable.ic_eye_outlined
-    // If you don't have these specific icons, replace them or remove password visibility toggle for now.
-    // For example, use Icons.Filled.Visibility and Icons.Filled.VisibilityOff from androidx.compose.material.icons.filled
 
     OutlinedTextField(
         modifier = modifier,
@@ -190,7 +186,7 @@ fun CustomTextField(
         shape = RoundedCornerShape(16.dp),
         visualTransformation = if (isPasswordField && !showPassword) PasswordVisualTransformation() else VisualTransformation.None,
         trailingIcon = {
-            if (value.isNotEmpty()) { // Show icon only if there's text
+            if (value.isNotEmpty()) {
                 if (isPasswordField) {
                     IconButton(onClick = { showPassword = !showPassword }) {
                         Icon(
