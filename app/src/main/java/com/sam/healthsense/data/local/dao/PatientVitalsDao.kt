@@ -8,7 +8,7 @@ import kotlinx.datetime.LocalDate
 interface PatientVitalsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertVitals(vitals: PatientVitalsEntity)
+    suspend fun insertPatientVitals(vitals: PatientVitalsEntity)
 
     @Query("SELECT * FROM patient_vitals WHERE patientId = :patientId AND visitDate = :visitDate")
     suspend fun getVitalsByPatientAndDate(patientId: String, visitDate: LocalDate): PatientVitalsEntity?

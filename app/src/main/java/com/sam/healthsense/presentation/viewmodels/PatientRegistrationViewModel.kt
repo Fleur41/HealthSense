@@ -1,5 +1,6 @@
 package com.sam.healthsense.presentation.viewmodels
 
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sam.healthsense.Utils.Result
@@ -11,18 +12,17 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
+import java.util.UUID
 import javax.inject.Inject
+
 
 @HiltViewModel
 class PatientRegistrationViewModel @Inject constructor(
     private val patientRepository: IPatientRepository
 ) : ViewModel() {
 
-    private val _registrationResult = MutableStateFlow<Result<Unit>?>(null)
-    val registrationResult: StateFlow<Result<Unit>?> = _registrationResult.asStateFlow()
-
-    private val _loadingState = MutableStateFlow(false)
-    val loadingState: StateFlow<Boolean> = _loadingState.asStateFlow()
+    private val _registrationResult = MutableStateFlow<Result<String>?>(null) // Returns patient ID
+    val registrationResult: StateFlow<Result<String>?> = _registrationResult.asStateFlow()
 
     fun registerPatient(
         patientNumber: String,
@@ -33,16 +33,17 @@ class PatientRegistrationViewModel @Inject constructor(
         gender: String
     ) {
         viewModelScope.launch {
-            _loadingState.value = true
             _registrationResult.value = Result.Loading
 
+            // Check if patient number already exists
             if (patientRepository.checkPatientNumberExists(patientNumber)) {
                 _registrationResult.value = Result.Error("Patient number already exists")
-                _loadingState.value = false
                 return@launch
             }
 
+            // Create patient with proper UUID
             val patient = Patient(
+                id = UUID.randomUUID().toString(), // Generate proper UUID
                 patientNumber = patientNumber,
                 registrationDate = registrationDate,
                 firstName = firstName,
@@ -51,9 +52,9 @@ class PatientRegistrationViewModel @Inject constructor(
                 gender = gender
             )
 
+            // Register patient and get the ID
             val result = patientRepository.registerPatient(patient)
             _registrationResult.value = result
-            _loadingState.value = false
         }
     }
 
@@ -65,6 +66,136 @@ class PatientRegistrationViewModel @Inject constructor(
         _registrationResult.value = null
     }
 }
+//@HiltViewModel
+//class PatientRegistrationViewModel @Inject constructor(
+//    private val patientRepository: IPatientRepository
+//) : ViewModel() {
+//
+//    private val _registrationResult = MutableStateFlow<Result<String>?>(null) // Changed to return patient ID
+//    val registrationResult: StateFlow<Result<String>?> = _registrationResult.asStateFlow()
+//
+//    fun registerPatient(
+//        patientNumber: String,
+//        registrationDate: LocalDate,
+//        firstName: String,
+//        lastName: String,
+//        dateOfBirth: LocalDate,
+//        gender: String
+//    ) {
+//        viewModelScope.launch {
+//            _registrationResult.value = Result.Loading
+//
+//            // Check if patient number already exists
+//            if (patientRepository.checkPatientNumberExists(patientNumber)) {
+//                _registrationResult.value = Result.Error("Patient number already exists")
+//                return@launch
+//            }
+//
+//            val patient = Patient(
+//                patientNumber = patientNumber,
+//                registrationDate = registrationDate,
+//                firstName = firstName,
+//                lastName = lastName,
+//                dateOfBirth = dateOfBirth,
+//                gender = gender
+//            )
+//
+//            // Save patient and get the actual ID from database
+//            when (val result = patientRepository.registerPatient(patient)) {
+//                is Result.Success -> {
+//                    // Get the actual patient ID by querying with patient number
+//                    val savedPatient = patientRepository.getPatientByNumber(patientNumber)
+//                    if (savedPatient is Result.Success) {
+//                        _registrationResult.value = Result.Success(savedPatient.data.id)
+//                    } else {
+//                        _registrationResult.value = Result.Error("Patient saved but ID not found")
+//                    }
+//                }
+//                is Result.Error -> {
+//                    _registrationResult.value = Result.Error(result.message)
+//                }
+//                is Result.Loading -> {
+//                    // Should not happen here
+//                }
+//            }
+//        }
+//    }
+//
+//    fun clearRegistrationResult() {
+//        _registrationResult.value = null
+//    }
+//
+//    fun clearForm() {
+//        _registrationResult.value = null
+//    }
+//}
+
+//import androidx.lifecycle.ViewModel
+//import androidx.lifecycle.viewModelScope
+//import com.sam.healthsense.Utils.Result
+//import com.sam.healthsense.data.repository.IPatientRepository
+//import com.sam.healthsense.domain.model.Patient
+//import dagger.hilt.android.lifecycle.HiltViewModel
+//import kotlinx.coroutines.flow.MutableStateFlow
+//import kotlinx.coroutines.flow.StateFlow
+//import kotlinx.coroutines.flow.asStateFlow
+//import kotlinx.coroutines.launch
+//import kotlinx.datetime.LocalDate
+//import javax.inject.Inject
+//
+//@HiltViewModel
+//class PatientRegistrationViewModel @Inject constructor(
+//    private val patientRepository: IPatientRepository
+//) : ViewModel() {
+//
+//    private val _registrationResult = MutableStateFlow<Result<Unit>?>(null)
+//    val registrationResult: StateFlow<Result<Unit>?> = _registrationResult.asStateFlow()
+//
+//    private val _loadingState = MutableStateFlow(false)
+//    val loadingState: StateFlow<Boolean> = _loadingState.asStateFlow()
+//
+//    fun registerPatient(
+//        patientNumber: String,
+//        registrationDate: LocalDate,
+//        firstName: String,
+//        lastName: String,
+//        dateOfBirth: LocalDate,
+//        gender: String
+//    ) {
+//        viewModelScope.launch {
+//            _loadingState.value = true
+//            _registrationResult.value = Result.Loading
+//
+//            if (patientRepository.checkPatientNumberExists(patientNumber)) {
+//                _registrationResult.value = Result.Error("Patient number already exists")
+//                _loadingState.value = false
+//                return@launch
+//            }
+//
+//            //hapa ndio kuna maneno
+//            val patient = Patient(
+//                patientNumber = patientNumber,
+//                registrationDate = registrationDate,
+//                firstName = firstName,
+//                lastName = lastName,
+//                dateOfBirth = dateOfBirth,
+//                gender = gender
+//            )
+//
+//            val result = patientRepository.registerPatient(patient)
+//            _registrationResult.value = result
+//            _loadingState.value = false
+//        }
+//    }
+//
+//    fun clearRegistrationResult() {
+//        _registrationResult.value = null
+//    }
+//
+//    fun clearForm() {
+//        _registrationResult.value = null
+//    }
+//}
 
 
 //package com.sam.healthsense.presentation.viewmodels

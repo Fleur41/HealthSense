@@ -128,6 +128,32 @@ fun AppNavigation(
                 }
             )
         }
+//        composable(
+//            route = NavigationDestination.PatientRegistration.route,
+//            enterTransition = { slideIntoContainerAnimation() },
+//            exitTransition = { slideOutOfContainerAnimation() }
+//        ) { backStackEntry ->
+//            PatientRegistrationScreen(
+//                onBack = {
+//                    navController.navigate(NavigationDestination.Home.route){
+//                        popUpTo(NavigationDestination.Home.route) { inclusive = true }
+//                    }
+//                },
+//                onPatientRegistered = { patientId ->
+//                    println("🟡 DEBUG: PatientRegistration - received patientId: '$patientId'")
+//                    // Add validation here to ensure it's a UUID, not a patient number
+//                    if (patientId.startsWith("PAT")) {
+//                        println("🔴 DEBUG: ERROR - Received patient NUMBER instead of UUID: $patientId")
+//                        // You might need to fetch the correct UUID from the database
+//                        // But better to fix the source in the ViewModel
+//                    } else {
+//                        println("🟢 DEBUG: Received valid UUID, navigating to vitals")
+//                        navController.navigate(NavigationDestination.PatientVitals.createRoute(patientId))
+//                    }
+//                }
+//            )
+//        }
+
 
         composable(
             route = NavigationDestination.PatientVitals.route,

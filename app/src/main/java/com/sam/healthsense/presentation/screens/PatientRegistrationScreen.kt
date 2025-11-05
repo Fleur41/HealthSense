@@ -1,6 +1,5 @@
 package com.sam.healthsense.presentation.screens
 
-
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -55,7 +54,7 @@ fun PatientRegistrationScreen(
     onPatientRegistered: (String) -> Unit,
     viewModel: PatientRegistrationViewModel = hiltViewModel()
 ) {
-    // Local states as per your pattern
+    // Local states
     var patientNumber by remember { mutableStateOf("") }
     var registrationDate by remember { mutableStateOf("") }
     var firstName by remember { mutableStateOf("") }
@@ -101,7 +100,6 @@ fun PatientRegistrationScreen(
         clearError()
     }
 
-
     // Validate and register patient
     fun registerPatient() {
         clearError()
@@ -140,8 +138,7 @@ fun PatientRegistrationScreen(
             return
         }
 
-        // Use ViewModel function with all parameters
-        // For now, use current date as placeholder for LocalDate
+        // Use current date as placeholder for LocalDate
         val currentDate = LocalDate(2024, 1, 1) // Placeholder date
         viewModel.registerPatient(
             patientNumber = patientNumber,
@@ -153,12 +150,14 @@ fun PatientRegistrationScreen(
         )
     }
 
-    // Handle successful registration
+    // Handle successful registration - FIXED: Use actual patient ID from ViewModel
     LaunchedEffect(registrationResult) {
         if (registrationResult is Result.Success) {
-            // Generate a patient ID (in real app, this would come from backend)
-            val patientId = "PAT${System.currentTimeMillis()}"
+            val patientId = (registrationResult as Result.Success<String>).data
             onPatientRegistered(patientId)
+
+            // Show success message
+            Toast.makeText(context, "Patient registered successfully!", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -218,7 +217,7 @@ fun PatientRegistrationScreen(
                 }
             }
 
-            // Patient Registration Form - STRICT ORDER as per Figma
+            // Patient Registration Form
             Column(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
@@ -240,7 +239,7 @@ fun PatientRegistrationScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                // 2. Registration Date (Now editable text field)
+                // 2. Registration Date
                 OutlinedTextField(
                     value = registrationDate,
                     onValueChange = {
@@ -296,7 +295,7 @@ fun PatientRegistrationScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                // 5. Date of Birth (Now editable text field)
+                // 5. Date of Birth
                 OutlinedTextField(
                     value = dateOfBirth,
                     onValueChange = {
@@ -438,6 +437,10 @@ fun PatientRegistrationScreen(
         }
     }
 }
+
+//package com.sam.healthsense.presentation.screens
+
+//
 //import android.widget.Toast
 //import androidx.compose.foundation.layout.Arrangement
 //import androidx.compose.foundation.layout.Column
@@ -466,6 +469,7 @@ fun PatientRegistrationScreen(
 //import androidx.compose.material3.Scaffold
 //import androidx.compose.material3.Text
 //import androidx.compose.material3.TopAppBar
+//import androidx.compose.material3.TopAppBarDefaults
 //import androidx.compose.runtime.Composable
 //import androidx.compose.runtime.LaunchedEffect
 //import androidx.compose.runtime.collectAsState
@@ -475,6 +479,7 @@ fun PatientRegistrationScreen(
 //import androidx.compose.runtime.setValue
 //import androidx.compose.ui.Alignment
 //import androidx.compose.ui.Modifier
+//import androidx.compose.ui.graphics.Color
 //import androidx.compose.ui.platform.LocalContext
 //import androidx.compose.ui.text.font.FontWeight
 //import androidx.compose.ui.unit.dp
@@ -490,12 +495,12 @@ fun PatientRegistrationScreen(
 //    onPatientRegistered: (String) -> Unit,
 //    viewModel: PatientRegistrationViewModel = hiltViewModel()
 //) {
-//    //  Local states
+//    // Local states as per your pattern
 //    var patientNumber by remember { mutableStateOf("") }
-//    var registrationDate by remember { mutableStateOf("") } // Changed to String for manual input
+//    var registrationDate by remember { mutableStateOf("") }
 //    var firstName by remember { mutableStateOf("") }
 //    var lastName by remember { mutableStateOf("") }
-//    var dateOfBirth by remember { mutableStateOf("") } // Changed to String for manual input
+//    var dateOfBirth by remember { mutableStateOf("") }
 //    var gender by remember { mutableStateOf("") }
 //
 //    // Error states
@@ -575,7 +580,7 @@ fun PatientRegistrationScreen(
 //            return
 //        }
 //
-//        //  Use ViewModel function with all parameters
+//        // Use ViewModel function with all parameters
 //        // For now, use current date as placeholder for LocalDate
 //        val currentDate = LocalDate(2024, 1, 1) // Placeholder date
 //        viewModel.registerPatient(
@@ -583,7 +588,7 @@ fun PatientRegistrationScreen(
 //            registrationDate = currentDate,
 //            firstName = firstName,
 //            lastName = lastName,
-//            dateOfBirth = currentDate, // Using placeholder
+//            dateOfBirth = currentDate,
 //            gender = gender
 //        )
 //    }
@@ -614,7 +619,10 @@ fun PatientRegistrationScreen(
 //                            contentDescription = "Back"
 //                        )
 //                    }
-//                }
+//                },
+//                colors = TopAppBarDefaults.topAppBarColors(
+//                    containerColor = Color.Yellow.copy(alpha = 0.3f) // Light yellow background
+//                )
 //            )
 //        }
 //    ) { innerPadding ->
@@ -625,7 +633,7 @@ fun PatientRegistrationScreen(
 //                .padding(16.dp)
 //                .verticalScroll(rememberScrollState())
 //        ) {
-//            // Form Header
+//            // Form Header Card
 //            Card(
 //                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
 //                modifier = Modifier
@@ -661,7 +669,7 @@ fun PatientRegistrationScreen(
 //                        patientNumber = it
 //                        isPatientNumberError = it.isBlank()
 //                    },
-//                    label = { Text("Patient Number *") },
+//                    label = { Text("Patient Number") },
 //                    placeholder = { Text("Enter unique patient number") },
 //                    isError = isPatientNumberError,
 //                    supportingText = {
@@ -679,7 +687,7 @@ fun PatientRegistrationScreen(
 //                        registrationDate = it
 //                        isRegistrationDateError = it.isBlank()
 //                    },
-//                    label = { Text("Registration Date *") },
+//                    label = { Text("Registration Date") },
 //                    placeholder = { Text("DD/MM/YYYY") },
 //                    isError = isRegistrationDateError,
 //                    supportingText = {
@@ -699,7 +707,7 @@ fun PatientRegistrationScreen(
 //                        firstName = it
 //                        isFirstNameError = it.isBlank()
 //                    },
-//                    label = { Text("First Name *") },
+//                    label = { Text("First Name") },
 //                    placeholder = { Text("Enter first name") },
 //                    isError = isFirstNameError,
 //                    supportingText = {
@@ -717,7 +725,7 @@ fun PatientRegistrationScreen(
 //                        lastName = it
 //                        isLastNameError = it.isBlank()
 //                    },
-//                    label = { Text("Last Name *") },
+//                    label = { Text("Last Name") },
 //                    placeholder = { Text("Enter last name") },
 //                    isError = isLastNameError,
 //                    supportingText = {
@@ -735,7 +743,7 @@ fun PatientRegistrationScreen(
 //                        dateOfBirth = it
 //                        isDateOfBirthError = it.isBlank()
 //                    },
-//                    label = { Text("Date of Birth *") },
+//                    label = { Text("Date of Birth") },
 //                    placeholder = { Text("DD/MM/YYYY") },
 //                    isError = isDateOfBirthError,
 //                    supportingText = {
@@ -756,7 +764,7 @@ fun PatientRegistrationScreen(
 //                    OutlinedTextField(
 //                        value = gender,
 //                        onValueChange = { },
-//                        label = { Text("Gender *") },
+//                        label = { Text("Gender") },
 //                        placeholder = { Text("Select gender") },
 //                        isError = isGenderError,
 //                        supportingText = {
@@ -798,7 +806,7 @@ fun PatientRegistrationScreen(
 //
 //                Spacer(modifier = Modifier.height(24.dp))
 //
-//                //  TWO BUTTONS IN A ROW as per Figma design
+//                // Two Buttons in a Row
 //                Row(
 //                    modifier = Modifier.fillMaxWidth(),
 //                    horizontalArrangement = Arrangement.SpaceBetween
@@ -807,7 +815,7 @@ fun PatientRegistrationScreen(
 //                    Button(
 //                        onClick = {
 //                            clearData()
-//                            viewModel.clearForm() // Using ViewModel function
+//                            viewModel.clearForm()
 //                            onBack()
 //                        },
 //                        modifier = Modifier.weight(1f),
@@ -823,7 +831,7 @@ fun PatientRegistrationScreen(
 //
 //                    // Save Button (Right)
 //                    Button(
-//                        onClick = { registerPatient() }, //  Calls function that uses ViewModel
+//                        onClick = { registerPatient() },
 //                        modifier = Modifier.weight(1f),
 //                        enabled = registrationResult !is Result.Loading
 //                    ) {
@@ -853,7 +861,7 @@ fun PatientRegistrationScreen(
 //                                Spacer(modifier = Modifier.height(8.dp))
 //                                Button(
 //                                    onClick = {
-//                                        viewModel.clearRegistrationResult() // Using ViewModel function
+//                                        viewModel.clearRegistrationResult()
 //                                    },
 //                                    modifier = Modifier.fillMaxWidth()
 //                                ) {
@@ -870,4 +878,3 @@ fun PatientRegistrationScreen(
 //        }
 //    }
 //}
-//

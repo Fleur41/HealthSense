@@ -25,13 +25,12 @@ class VisitRepository @Inject constructor(
     private val patientVitalsDao: PatientVitalsDao,
     private val generalAssessmentDao: GeneralAssessmentDao,
     private val overweightAssessmentDao: OverweightAssessmentDao,
-    private val visitApi: VisitApi
 ) : IVisitRepository {
 
     override suspend fun savePatientVitals(vitals: PatientVitals): Result<Unit> {
         return try {
             // Save locally first
-            patientVitalsDao.insertVitals(vitals.toEntity())
+            patientVitalsDao.insertPatientVitals(vitals.toEntity())
 
             // TODO: Sync to backend with Firebase token
             // val token = getFirebaseToken()

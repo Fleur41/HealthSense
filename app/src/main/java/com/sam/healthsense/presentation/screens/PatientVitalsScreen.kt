@@ -1,5 +1,9 @@
 package com.sam.healthsense.presentation.screens
 
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+
+
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -73,15 +77,28 @@ fun PatientVitalsScreen(
     // Context for Toast
     val context = LocalContext.current
 
-    // Load patient name when screen opens and set it to the field
+    // Debug logging for the patientId parameter - ACTUAL CODE IMPLEMENTATION
     LaunchedEffect(patientId) {
+        println("🟡 DEBUG: PatientVitalsScreen received patientId: '$patientId'")
+        println("🟡 DEBUG: patientId length: ${patientId.length}")
+        println("🟡 DEBUG: patientId is blank: ${patientId.isBlank()}")
+
         viewModel.loadPatientName(patientId)
+
+        // Temporary: Debug all patient IDs - ACTUAL CODE IMPLEMENTATION
+        viewModel.viewModelScope.launch {
+            viewModel.debugGetAllPatients()
+            viewModel.debugCheckPatient(patientId)
+        }
     }
 
     // Update the patient name field when loaded from ViewModel
     LaunchedEffect(loadedPatientName) {
         if (loadedPatientName != null) {
+            println("🟢 DEBUG: Setting patient name field to: '${loadedPatientName}'")
             patientName = loadedPatientName!!
+        } else {
+            println("🔴 DEBUG: loadedPatientName is null")
         }
     }
 
@@ -102,6 +119,7 @@ fun PatientVitalsScreen(
         if (heightValue > 0 && weightValue > 0) {
             val calculatedBMI = viewModel.calculateBMI(heightValue, weightValue)
             bmi = String.format("%.2f", calculatedBMI)
+            println("🟡 DEBUG: BMI calculated: $bmi from height: $heightValue, weight: $weightValue")
         } else {
             bmi = ""
         }
@@ -131,6 +149,7 @@ fun PatientVitalsScreen(
         }
 
         if (hasError) {
+            println("🔴 DEBUG: Form validation failed - missing required fields")
             Toast.makeText(context, "Please fill all required fields", Toast.LENGTH_LONG).show()
             return
         }
@@ -140,12 +159,14 @@ fun PatientVitalsScreen(
         val bmiValue = bmi.toDoubleOrNull() ?: 0.0
 
         if (heightValue <= 0 || weightValue <= 0 || bmiValue <= 0) {
+            println("🔴 DEBUG: Invalid height/weight values: height=$heightValue, weight=$weightValue")
             Toast.makeText(context, "Please enter valid height and weight", Toast.LENGTH_LONG).show()
             return
         }
 
         // Use current date as placeholder for LocalDate
         val currentDate = LocalDate(2024, 1, 1) // Placeholder date
+        println("🟡 DEBUG: Calling savePatientVitals with patientId: '$patientId'")
         viewModel.savePatientVitals(
             patientId = patientId,
             visitDate = currentDate,
@@ -157,9 +178,22 @@ fun PatientVitalsScreen(
 
     // Handle successful vitals save
     LaunchedEffect(saveVitalsResult) {
-        if (saveVitalsResult is Result.Success) {
-            val bmiValue = bmi.toDoubleOrNull() ?: 0.0
-            onVitalsSaved(patientId, bmiValue)
+        when (saveVitalsResult) {
+            is Result.Success -> {
+                println("🟢 DEBUG: Vitals saved successfully, triggering navigation...")
+                val bmiValue = bmi.toDoubleOrNull() ?: 0.0
+                onVitalsSaved(patientId, bmiValue)
+            }
+            is Result.Error -> {
+                println("🔴 DEBUG: Save failed: ${(saveVitalsResult as Result.Error).message}")
+                // Error is already shown in the UI
+            }
+            is Result.Loading -> {
+                println("🟡 DEBUG: Save in progress...")
+            }
+            null -> {
+                // Initial state, do nothing
+            }
         }
     }
 
@@ -174,7 +208,10 @@ fun PatientVitalsScreen(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = onBack) {
+                    IconButton(onClick = {
+                        println("🟡 DEBUG: Back button pressed")
+                        onBack()
+                    }) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "Back"
@@ -310,6 +347,7 @@ fun PatientVitalsScreen(
                     // Close Button (Left)
                     Button(
                         onClick = {
+                            println("🟡 DEBUG: Close button pressed")
                             onBack()
                         },
                         modifier = Modifier.weight(1f),
@@ -325,7 +363,10 @@ fun PatientVitalsScreen(
 
                     // Save Button (Right)
                     Button(
-                        onClick = { saveVitals() },
+                        onClick = {
+                            println("🟡 DEBUG: Save button pressed")
+                            saveVitals()
+                        },
                         modifier = Modifier.weight(1f),
                         enabled = saveVitalsResult !is Result.Loading
                     ) {
@@ -355,6 +396,7 @@ fun PatientVitalsScreen(
                                 Spacer(modifier = Modifier.height(8.dp))
                                 Button(
                                     onClick = {
+                                        println("🟡 DEBUG: Dismiss error button pressed")
                                         viewModel.clearSaveVitalsResult()
                                     },
                                     modifier = Modifier.fillMaxWidth()
@@ -373,11 +415,6 @@ fun PatientVitalsScreen(
     }
 }
 
-//package com.sam.healthsense.presentation.screens
-//
-//import com.sam.healthsense.presentation.viewmodels.PatientVitalsViewModel
-//
-//
 //import android.widget.Toast
 //import androidx.compose.foundation.layout.Arrangement
 //import androidx.compose.foundation.layout.Column
@@ -419,6 +456,7 @@ fun PatientVitalsScreen(
 //import androidx.compose.ui.unit.dp
 //import androidx.hilt.navigation.compose.hiltViewModel
 //import com.sam.healthsense.Utils.Result
+//import com.sam.healthsense.presentation.viewmodels.PatientVitalsViewModel
 //import kotlinx.datetime.LocalDate
 //
 //@OptIn(ExperimentalMaterial3Api::class)
@@ -430,31 +468,42 @@ fun PatientVitalsScreen(
 //    viewModel: PatientVitalsViewModel = hiltViewModel()
 //) {
 //    // Local states
+//    var patientName by remember { mutableStateOf("") }
 //    var visitDate by remember { mutableStateOf("") }
 //    var height by remember { mutableStateOf("") }
 //    var weight by remember { mutableStateOf("") }
 //    var bmi by remember { mutableStateOf("") }
 //
+//
 //    // Error states
+//    var isPatientNameError by remember { mutableStateOf(false) }
 //    var isVisitDateError by remember { mutableStateOf(false) }
 //    var isHeightError by remember { mutableStateOf(false) }
 //    var isWeightError by remember { mutableStateOf(false) }
 //
 //    // ViewModel states
 //    val saveVitalsResult by viewModel.saveVitalsResult.collectAsState()
-//    val patientName by viewModel.patientName.collectAsState()
+//    val loadedPatientName by viewModel.patientName.collectAsState()
 //    val loadingState by viewModel.loadingState.collectAsState()
 //
 //    // Context for Toast
 //    val context = LocalContext.current
 //
-//    // Load patient name when screen opens
+//    // Load patient name when screen opens and set it to the field
 //    LaunchedEffect(patientId) {
 //        viewModel.loadPatientName(patientId)
 //    }
 //
+//    // Update the patient name field when loaded from ViewModel
+//    LaunchedEffect(loadedPatientName) {
+//        if (loadedPatientName != null) {
+//            patientName = loadedPatientName!!
+//        }
+//    }
+//
 //    // Clear error function
 //    fun clearError() {
+//        isPatientNameError = false
 //        isVisitDateError = false
 //        isHeightError = false
 //        isWeightError = false
@@ -480,6 +529,10 @@ fun PatientVitalsScreen(
 //
 //        var hasError = false
 //
+//        if (patientName.isBlank()) {
+//            isPatientNameError = true
+//            hasError = true
+//        }
 //        if (visitDate.isBlank()) {
 //            isVisitDateError = true
 //            hasError = true
@@ -557,42 +610,35 @@ fun PatientVitalsScreen(
 //                .padding(16.dp)
 //                .verticalScroll(rememberScrollState())
 //        ) {
-//            // Patient Name Display
-//            Card(
-//                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(bottom = 24.dp)
-//            ) {
-//                Column(
-//                    modifier = Modifier.padding(16.dp)
-//                ) {
-//                    Text(
-//                        text = "Patient Name:",
-//                        style = MaterialTheme.typography.bodyMedium,
-//                        color = MaterialTheme.colorScheme.onSurfaceVariant
-//                    )
-//                    Spacer(modifier = Modifier.height(4.dp))
-//                    if (loadingState) {
-//                        Text(
-//                            text = "Loading...",
-//                            style = MaterialTheme.typography.bodyLarge,
-//                            fontWeight = FontWeight.Medium
-//                        )
-//                    } else {
-//                        Text(
-//                            text = patientName ?: "Unknown Patient",
-//                            style = MaterialTheme.typography.bodyLarge,
-//                            fontWeight = FontWeight.Medium
-//                        )
-//                    }
-//                }
-//            }
-//
 //            // Vitals Form - Exact order as per mockup
 //            Column(
 //                verticalArrangement = Arrangement.spacedBy(16.dp)
 //            ) {
+//                // Patient Name (First field as per mockup)
+//                OutlinedTextField(
+//                    value = patientName,
+//                    onValueChange = {
+//                        patientName = it
+//                        isPatientNameError = it.isBlank()
+//                    },
+//                    label = { Text("Patient Name") },
+//                    placeholder = {
+//                        if (loadingState) {
+//                            Text("Loading patient name...")
+//                        } else {
+//                            Text("Enter patient name")
+//                        }
+//                    },
+//                    isError = isPatientNameError,
+//                    supportingText = {
+//                        if (isPatientNameError) {
+//                            Text("Patient name is required", color = MaterialTheme.colorScheme.error)
+//                        }
+//                    },
+//                    modifier = Modifier.fillMaxWidth(),
+//                    readOnly = loadingState // Read-only while loading
+//                )
+//
 //                // Visit Date
 //                OutlinedTextField(
 //                    value = visitDate,
@@ -742,3 +788,4 @@ fun PatientVitalsScreen(
 //        }
 //    }
 //}
+
