@@ -92,9 +92,9 @@ HealthSense is a modern Android application built with **Kotlin** and **Jetpack 
 
 ### Prerequisites
 - Android Studio (Hedgehog or later)
-- Android SDK API 24+
-- Kotlin 1.9.0+
-- An Android device or emulator (API 24+)
+- Android SDK API 34+
+- Kotlin 2.0.0+
+- An Android device or emulator (API 34+)
 
 ### Installation Steps
 
