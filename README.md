@@ -47,11 +47,6 @@ HealthSense is a modern Android application built with **Kotlin** and **Jetpack 
 - **Custom Animations** - Smooth screen transitions
 - **Accompanist** - Additional Compose utilities
 
-### Testing
-- **JUnit** - Unit testing framework
-- **Turbine** - Testing for Kotlin Flows
-- **Espresso** - UI testing framework
-
 ## Key Features
 
 ### Secure Authentication
