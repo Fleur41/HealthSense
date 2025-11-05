@@ -5,8 +5,8 @@
 
 *A comprehensive healthcare application for efficient patient management and vital signs tracking*
 
-[![Kotlin](https://img.shields.io/badge/Kotlin-1.9.0-blue.svg)](https://kotlinlang.org)
-[![Android](https://img.shields.io/badge/Android-API+24+-green.svg)](https://developer.android.com)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.0.2-blue.svg)](https://kotlinlang.org)
+[![Android](https://img.shields.io/badge/Android-API+34+-green.svg)](https://developer.android.com)
 [![Compose](https://img.shields.io/badge/Jetpack%20Compose-1.5+-purple.svg)](https://developer.android.com/jetpack/compose)
 [![Firebase](https://img.shields.io/badge/Firebase-Auth%20%26%20Firestore-orange.svg)](https://firebase.google.com)
 
